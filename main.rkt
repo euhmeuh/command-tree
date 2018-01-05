@@ -31,7 +31,7 @@
     [(list? command)
      (command-tree command (cdr arguments))]
     [else
-(error-and-display-available-commands 'unknown-command tree)]))
+     (error-and-display-available-commands 'unknown-command tree)]))
 
 (module+ test
   (require
