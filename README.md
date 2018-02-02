@@ -37,8 +37,7 @@ This package allows you to write command line applications that behaves like thi
            (apply ,git-stash-apply)]))
 
 ;; use the tree to parse the command line
-(command-tree git-commands
-              (vector->list (current-command-line-arguments)))
+(command-tree git-commands (current-command-line-arguments))
 ```
 
 See the test submodule in main.rkt for a complete usage example.

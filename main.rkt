@@ -21,15 +21,22 @@
     title
     "Available commands are: ~a" (map car tree)))
 
+(define (normalize-arguments x)
+  (cond
+    [(list? x) x]
+    [(vector? x) (vector->list x)]
+    [else (list x)]))
+
 (define (command-tree tree arguments)
-  (when (empty? arguments)
+  (define args (normalize-arguments arguments))
+  (when (empty? args)
     (error-and-display-available-commands 'missing-sub-command tree))
-  (define command (get-command tree (car arguments)))
+  (define command (get-command tree (car args)))
   (cond
     [(procedure? command)
-     (apply command (cdr arguments))]
+     (apply command (cdr args))]
     [(list? command)
-     (command-tree command (cdr arguments))]
+     (command-tree command (cdr args))]
     [else
      (error-and-display-available-commands 'unknown-command tree)]))
 
@@ -100,7 +107,13 @@
   (check-equal? (command-tree git-commands '("init"))
                 "git init")
 
+  (check-equal? (command-tree git-commands "init")
+                "git init")
+
   (check-equal? (command-tree git-commands '("push" "origin" "master"))
+                "git push origin master")
+
+  (check-equal? (command-tree git-commands (vector "push" "origin" "master"))
                 "git push origin master")
 
   (check-equal? (command-tree git-commands '("remote" "add" "prod" "https://my/prod/repo"))
