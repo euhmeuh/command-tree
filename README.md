@@ -13,6 +13,10 @@ This package allows you to write command line applications that behaves like thi
 
 `$ hello world --help`
 
+# Install
+
+`raco pkg install command-tree`
+
 # Usage
 
 ```racket
